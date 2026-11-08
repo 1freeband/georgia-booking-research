@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Georgia Booking People Lookup</title>
+<style>
+body{font-family:system-ui,Arial,sans-serif;margin:0;background:#f4f6f9;color:#222}
+header{background:#1f3a5f;color:#fff;padding:14px 22px}h1{margin:0;font-size:20px}header p{margin:4px 0 0;font-size:13px;opacity:.85}
+main{padding:18px 22px;max-width:1350px;margin:auto}
+.card{background:#fff;border-radius:8px;padding:14px;margin-bottom:14px;box-shadow:0 1px 3px #0002}
+textarea{width:100%;height:170px;font-family:monospace;font-size:12px;box-sizing:border-box}
+input,select{padding:6px;font-size:14px}label{margin-right:14px;font-size:14px;display:inline-block;margin-bottom:6px}
+button{background:#1f6feb;color:#fff;border:0;border-radius:5px;padding:8px 14px;cursor:pointer;font-size:14px;margin:0 6px 6px 0}
+button.alt{background:#6b7280}button.grn{background:#16a34a}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px;border-bottom:1px solid #e5e7eb;text-align:left;vertical-align:top}
+th{background:#eef2f7;position:sticky;top:0}
+a.go{display:inline-block;color:#fff;padding:4px 8px;border-radius:4px;text-decoration:none;white-space:nowrap;margin:0 3px 3px 0;font-size:12px}
+a.c{background:#16a34a}a.s{background:#0e7490}a.v{background:#7c3aed}a.g{background:#6b7280}
+tr.done{opacity:.45}.tag{font-size:11px;padding:2px 6px;border-radius:9px;background:#fde68a;margin-right:3px;white-space:nowrap}
+.tag.dui{background:#fecaca}.tag.pend{background:#e5e7eb}.tag.fel{background:#fca5a5;font-weight:bold}.tag.hold{background:#bfdbfe}
+td input.note{width:140px;font-size:12px;padding:4px}td select{font-size:12px;padding:3px;max-width:130px}
+#warn{color:#b45309;font-size:13px}small{color:#555}
+</style></head><body>
+<header><h1>Georgia Booking → TruePeopleSearch Lookup</h1><p>All 159 Georgia counties · Searches filtered by name, city, and age · Your progress is saved in this browser</p></header>
+<main>
+<div class="card">
+<p style="margin-top:0">Paste one or more booking lists. Use the format <code>LAST, FIRST (age) — date — charges</code>. County headings like <code>— Richmond —</code> or <code>— Cobb County —</code> set the county for the names below them. Names under no heading use the default county.</p>
+<textarea id="input" placeholder="— Richmond —&#10;BELL, DEASIA (22) — 11/07 00:00 — DUI / Alcohol / Less Safe ($1,400.00)&#10;— Chatham —&#10;SMITH, JOHN JR (40) — 11/07 00:00 — charges pending"></textarea>
+<p>
+<label>Default county <select id="county"></select></label>
+<label>Age range ± <input id="pm" type="number" value="1" min="0" max="10" style="width:55px"></label>
+<label><input type="checkbox" id="autoopen" checked> Open first search on submit</label><label><input type="checkbox" id="autoQ" checked> Build the call queue automatically when done</label>
+</p>
+<button id="parse">Build lookup list</button>
+<button id="add" class="alt">Add to existing list</button>
+<button id="clear" class="alt">Clear all</button>
+<span id="warn"></span>
+</div>
+<div class="card" style="background:#fffbeb">
+<b>📞 One-time setup: grab phones and relatives with one click.</b> Drag this button to your bookmarks bar: <a id="bm" href="javascript:(function(){if(!/%5C/find%5C/person%5C//.test(location.pathname)&&!/%5C.html%24/.test(location.pathname)){alert('Open%20the%20person%5C's%20profile%20page%20first,%20then%20tap%20Grab.');return}var%20L=document.body.innerText.split('%5Cn').map(function(s){return%20s.trim()}).filter(Boolean),P=[],S={},AD=[],AS={};for(var%20i=0;i<L.length;i++){var%20m=L[i].match(/%5C(?%5Cd{3}%5C)?[%5Cs.-]?%5Cd{3}[%5Cs.-]%5Cd{4}/);if(m){var%20n=m[0].replace(/%5CD/g,'');if(n.length===10&&!S[n]){S[n]=1;var%20c=(L[i]+'%20'+(L[i+1]||'')+'%20'+(L[i+2]||'')).toLowerCase();P.push({n:n,type:/wireless|mobile|cell/.test(c)?'Wireless':/landline/.test(c)?'Landline':/voip/.test(c)?'VoIP':'',primary:/primary|current/.test(c)})}}var%20a=L[i].match(/%5E%5Cd+[A-Za-z]?%5Cs+%5CS.*%24/),z=(L[i+1]||'').match(/%5E[A-Za-z%20.'-]+,%5Cs*[A-Z]{2}%5Cs+%5Cd{5}/);if(a&&z&&!/%5Cd{3}%5CD{0,2}%5Cd{3}%5CD%5Cd{4}/.test(L[i])){var%20full=L[i]+',%20'+z[0];if(!AS[full]){AS[full]=1;AD.push(full)}}}var%20E=[].slice.call(document.querySelectorAll('h1,h2,h3,h4,h5,h6,div,span,strong,b,p,a,button')).filter(function(e){var%20t=e.textContent.trim();return%20t.length<45&&!e.querySelector('a[href*=%22/find/person/%22]')});function%20hd(re){var%20c=E.filter(function(e){return%20re.test(e.textContent)});return%20c[c.length-1]&&c.filter(function(e){return%20!c.some(function(o){return%20o!==e&&e.contains(o)})})[0]}function%20after(a,b){return%20!!(a.compareDocumentPosition(b)&4)}var%20H={rel:hd(/%5E%5Cs*(possible%5Cs+)?relatives%5Cs*%24/i),asc:hd(/%5E%5Cs*(possible%5Cs+)?associates%5Cs*%24/i)},STOP=/%5E%5Cs*(possible%5Cs+)?(relatives|associates|neighbors|business|current%20address|previous%20addresses|email|phone%20numbers)/i;var%20A=[].slice.call(document.querySelectorAll('a[href*=%22/find/person/%22]'));function%20grab(st){var%20R=[],RS={};if(!st)return%20R;var%20en=E.filter(function(e){return%20e!==st&&STOP.test(e.textContent)&&after(st,e)})[0];A.forEach(function(a){if(!after(st,a))return;if(en&&!after(a,en))return;var%20t=a.textContent.replace(/%5Cs+/g,'%20').trim().replace(/%5Cs*Age%5Cs*%5Cd+.*%24/i,'');if(!t||t.length>60||RS[t])return;RS[t]=1;R.push({name:t,url:a.href})});return%20R}var%20h=document.querySelector('h1');var%20d={name:h?h.innerText.trim():document.title,url:location.href,phones:P,addresses:AD.slice(0,4),relatives:grab(H.rel),associates:grab(H.asc)};var%20K='tpsLookupRun',st=null;try{st=JSON.parse(localStorage.getItem(K)||'null')}catch(e){}var%20path=function(u){try{return%20new%20URL(u).pathname}catch(e){return%20u}};var%20k=st&&st.kin.filter(function(x){return%20path(x.url)===path(location.href)})[0];if(k){k.data=d}else{st={src:'tpslookup',bundle:true,main:d,kin:d.relatives.map(function(r){return{name:r.name,url:r.url,rel:'Relative'}}).concat(d.associates.map(function(r){return{name:r.name,url:r.url,rel:'Associate'}}))}}localStorage.setItem(K,JSON.stringify(st));var%20nx=st.kin.filter(function(x){return%20!x.data})[0],done=st.kin.length-st.kin.filter(function(x){return%20!x.data}).length;var%20j=JSON.stringify(st);var%20box=document.createElement('div');box.style.cssText='position:fixed;top:10px;left:10px;right:10px;z-index:2147483647;background:%2316a34a;color:%23fff;font:bold%2018px%20sans-serif;padding:14px;border-radius:10px;text-align:center';var%20ra=k?'':('%20%C2%B7%20'+d.relatives.length+'%20relatives,%20'+d.associates.length+'%20associates%20found');box.textContent=nx?('%E2%9C%85%20Saved%20'+d.name+'%20('+P.length+'%20phones'+ra+').%20Next:%20'+nx.name+'%20('+(done+1)+'%20of%20'+st.kin.length+')%E2%80%A6'):('%E2%9C%85%20ALL%20DONE:%20'+st.main.name+'%20+%20'+st.kin.length+'%20relatives/associates.%20Switch%20back%20to%20the%20Lookup%20tab.');document.body.appendChild(box);function%20go(){if(nx)location.href=nx.url}navigator.clipboard.writeText(j).then(function(){setTimeout(go,nx?600:0)},function(){prompt('Copy%20this,%20then%20tap%20Paste%20in%20the%20Lookup%20tool:',j);go()})})()" style="background:#dc2626;color:#fff;padding:5px 10px;border-radius:5px;text-decoration:none;font-weight:bold">📞 Grab to Lookup</a>
+<p style="font-size:13px;margin:6px 0 0"><b>Flow (1 tap per person):</b> paste the inmate → <b>Build</b> (TruePeopleSearch opens) → tap the right match → tap <b>📞 Grab</b>. It saves that page and <b>automatically jumps to the next relative/associate</b>. Just keep tapping 📞 Grab on each page until it says <b>ALL DONE</b>, then switch back here. Phones, addresses, skipped people and your call queue all fill in on their own. On Android Chrome, run the bookmark by typing its name in the address bar and tapping it. If nothing fills in, tap that person's <b>Paste</b> button.</p>
+</div>
+<div class="card" style="background:#ecfdf5">
+<b>📲 Bulk call queue</b> <small>Builds a list of every wireless number from offenders, relatives and associates you've grabbed. Repeated numbers are only listed once.</small>
+<p style="margin:8px 0">
+<label><input type="checkbox" id="qOff" checked> Offenders</label><label><input type="checkbox" id="qRel" checked> Relatives</label><label><input type="checkbox" id="qAsc" checked> Associates</label>
+<label><input type="checkbox" id="qAll"> Include landlines &amp; unknown types</label><label><input type="checkbox" id="qSkip" checked> Skip numbers already called</label>
+</p>
+<button id="qBuild" class="grn">Build call queue</button><button id="qCsv" class="alt">Download contacts CSV</button><button id="qReset" class="alt">Reset call outcomes</button> <span id="qInfo"></span>
+<div id="qPanel" style="display:none;margin-top:10px;padding:12px;background:#fff;border:2px solid #16a34a;border-radius:8px">
+<div style="font-size:13px;color:#555" id="qPos"></div>
+<div style="font-size:22px;font-weight:bold" id="qName"></div>
+<div style="font-size:14px" id="qWho"></div>
+<a id="qCall" href="#" style="display:inline-block;font-size:26px;font-weight:bold;background:#16a34a;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;margin:8px 0">📞</a>
+<div><button data-o="answered" class="grn">Answered</button><button data-o="voicemail">Voicemail</button><button data-o="no answer" class="alt">No answer</button><button data-o="wrong number" style="background:#dc2626">Wrong number</button><button data-o="callback">Call back</button><button id="qPrev" class="alt">◀ Back</button><button id="qNext" class="alt">Skip ▶</button></div>
+<input id="qNote" placeholder="Call note (saved with the outcome)" style="width:60%;margin-top:6px">
+<label style="margin-left:8px"><input type="checkbox" id="qAuto"> Dial next automatically after logging the outcome</label>
+</div>
+</div>
+<div class="card">
+<p style="margin-top:0">
+<input id="filter" placeholder="Filter by name, charge, county..." style="width:240px">
+<select id="show"><option value="all">All</option><option value="todo">Not done</option><option value="done">Done</option><option value="found">Found</option><option value="notfound">Not found</option></select>
+<button id="next" class="grn">Open next unchecked ▶</button>
+<button id="csv" class="alt">Export CSV</button>
+<span id="count"></span></p>
+<p style="font-size:12px;margin:0 0 8px"><b>Buttons:</b> <span class="tag" style="background:#16a34a;color:#fff">City</span> name + county seat + age · <span class="tag" style="background:#0e7490;color:#fff">GA-wide</span> name + age anywhere in GA, for people who live outside the jail's county · <span class="tag" style="background:#7c3aed;color:#fff">Alt</span> alternate spelling (first part of a hyphenated or two-part last name) · <span class="tag" style="background:#6b7280;color:#fff">Google</span> name + county + "arrest"</p>
+<table><thead><tr><th>✓</th><th>Name</th><th>Age</th><th>Booked</th><th>Charges</th><th>County / city</th><th>Search</th><th>Phones &amp; relatives</th><th>Result / notes</th></tr></thead><tbody id="rows"></tbody></table>
+</div>
+</main>
+<script>
+// County -> county seat (search city). Editable per person in the table.
+const COUNTIES={"Appling":"Baxley","Atkinson":"Pearson","Bacon":"Alma","Baker":"Newton","Baldwin":"Milledgeville","Banks":"Homer","Barrow":"Winder","Bartow":"Cartersville","Ben Hill":"Fitzgerald","Berrien":"Nashville","Bibb":"Macon","Bleckley":"Cochran","Brantley":"Nahunta","Brooks":"Quitman","Bryan":"Pembroke","Bulloch":"Statesboro","Burke":"Waynesboro","Butts":"Jackson","Calhoun":"Morgan","Camden":"Woodbine","Candler":"Metter","Carroll":"Carrollton","Catoosa":"Ringgold","Charlton":"Folkston","Chatham":"Savannah","Chattahoochee":"Cusseta","Chattooga":"Summerville","Cherokee":"Canton","Clarke":"Athens","Clay":"Fort Gaines","Clayton":"Jonesboro","Clinch":"Homerville","Cobb":"Marietta","Coffee":"Douglas","Colquitt":"Moultrie","Columbia":"Evans","Cook":"Adel","Coweta":"Newnan","Crawford":"Knoxville","Crisp":"Cordele","Dade":"Trenton","Dawson":"Dawsonville","Decatur":"Bainbridge","DeKalb":"Decatur","Dodge":"Eastman","Dooly":"Vienna","Dougherty":"Albany","Douglas":"Douglasville","Early":"Blakely","Echols":"Statenville","Effingham":"Springfield","Elbert":"Elberton","Emanuel":"Swainsboro","Evans":"Claxton","Fannin":"Blue Ridge","Fayette":"Fayetteville","Floyd":"Rome","Forsyth":"Cumming","Franklin":"Carnesville","Fulton":"Atlanta","Gilmer":"Ellijay","Glascock":"Gibson","Glynn":"Brunswick","Gordon":"Calhoun","Grady":"Cairo","Greene":"Greensboro","Gwinnett":"Lawrenceville","Habersham":"Clarkesville","Hall":"Gainesville","Hancock":"Sparta","Haralson":"Buchanan","Harris":"Hamilton","Hart":"Hartwell","Heard":"Franklin","Henry":"McDonough","Houston":"Perry","Irwin":"Ocilla","Jackson":"Jefferson","Jasper":"Monticello","Jeff Davis":"Hazlehurst","Jefferson":"Louisville","Jenkins":"Millen","Johnson":"Wrightsville","Jones":"Gray","Lamar":"Barnesville","Lanier":"Lakeland","Laurens":"Dublin","Lee":"Leesburg","Liberty":"Hinesville","Lincoln":"Lincolnton","Long":"Ludowici","Lowndes":"Valdosta","Lumpkin":"Dahlonega","Macon":"Oglethorpe","Madison":"Danielsville","Marion":"Buena Vista","McDuffie":"Thomson","McIntosh":"Darien","Meriwether":"Greenville","Miller":"Colquitt","Mitchell":"Camilla","Monroe":"Forsyth","Montgomery":"Mount Vernon","Morgan":"Madison","Murray":"Chatsworth","Muscogee":"Columbus","Newton":"Covington","Oconee":"Watkinsville","Oglethorpe":"Lexington","Paulding":"Dallas","Peach":"Fort Valley","Pickens":"Jasper","Pierce":"Blackshear","Pike":"Zebulon","Polk":"Cedartown","Pulaski":"Hawkinsville","Putnam":"Eatonton","Quitman":"Georgetown","Rabun":"Clayton","Randolph":"Cuthbert","Richmond":"Augusta","Rockdale":"Conyers","Schley":"Ellaville","Screven":"Sylvania","Seminole":"Donalsonville","Spalding":"Griffin","Stephens":"Toccoa","Stewart":"Lumpkin","Sumter":"Americus","Talbot":"Talbotton","Taliaferro":"Crawfordville","Tattnall":"Reidsville","Taylor":"Butler","Telfair":"McRae-Helena","Terrell":"Dawson","Thomas":"Thomasville","Tift":"Tifton","Toombs":"Lyons","Towns":"Hiawassee","Treutlen":"Soperton","Troup":"LaGrange","Turner":"Ashburn","Twiggs":"Jeffersonville","Union":"Blairsville","Upson":"Thomaston","Walker":"LaFayette","Walton":"Monroe","Ware":"Waycross","Warren":"Warrenton","Washington":"Sandersville","Wayne":"Jesup","Webster":"Preston","Wheeler":"Alamo","White":"Cleveland","Whitfield":"Dalton","Wilcox":"Abbeville","Wilkes":"Washington","Wilkinson":"Irwinton","Worth":"Sylvester"};
+const NAMES=Object.keys(COUNTIES);
+const $=id=>document.getElementById(id);
+const KEY='ga_booking_lookup_v2';
+let people=JSON.parse(localStorage.getItem(KEY)||'[]');
+const save=()=>localStorage.setItem(KEY,JSON.stringify(people));
+const SUFFIX=/^(JR|SR|II|III|IV|V)\.?$/i;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function tc(s){return s.toLowerCase().replace(/(^|[\s\-'])([a-z])/g,(m,a,b)=>a+b.toUpperCase()).replace(/\bMc([a-z])/g,(m,a)=>'Mc'+a.toUpperCase());}
+function findCounty(txt){
+  const t=txt.replace(/county|co\.|jail|sheriff|bookings?|ga\b|georgia/ig,'').replace(/[^a-z ]/ig,'').trim().toLowerCase();
+  if(!t)return null;
+  return NAMES.find(n=>n.toLowerCase()===t)||NAMES.find(n=>n.toLowerCase().replace(/\s/g,'')===t.replace(/\s/g,''))||null;
+}
+const RE=/^\s*([^,()—–]+?)\s*,\s*([^()—–]+?)\s*\((\d{1,3})\)\s*(?:[—–-]+\s*([\d\/]+)[^—–]*)?(?:[—–-]+\s*(.*))?$/;
+function parse(text,defCounty){
+  let county=defCounty,out=[],skipped=[];
+  text.split(/\r?\n/).forEach(raw=>{
+    const line=raw.trim();if(!line)return;
+    const m=line.match(RE);
+    if(m){
+      let lastParts=m[1].trim().split(/\s+/),firstParts=m[2].trim().split(/\s+/);
+      let suffix='';
+      firstParts=firstParts.filter(p=>SUFFIX.test(p)?(suffix=p.toUpperCase().replace('.',''),false):true);
+      lastParts=lastParts.filter(p=>SUFFIX.test(p)?(suffix=p.toUpperCase().replace('.',''),false):true);
+      const last=tc(lastParts.join(' ')),first=tc(firstParts[0]||''),middle=tc(firstParts.slice(1).join(' '));
+      out.push({id:Date.now()+Math.random(),last,first,middle,suffix,age:+m[3],booked:m[4]||'',charges:(m[5]||'').trim()||'not listed',
+        county,city:COUNTIES[county],done:false,status:'',note:''});
+      return;
+    }
+    const c=findCounty(line);
+    if(c){county=c;return;}
+    if(/[a-z]/i.test(line))skipped.push(line.slice(0,60));
+  });
+  return {out,skipped};
+}
+function ageRange(p){const pm=Math.max(0,+$('pm').value||0);return [Math.max(18,p.age-pm),p.age+pm];}
+function tps(name,loc,p){
+  const [a,b]=ageRange(p);
+  return 'https://www.truepeoplesearch.com/results?name='+encodeURIComponent(name)+'&citystatezip='+encodeURIComponent(loc)+'&agerange='+a+'-'+b;
+}
+function links(p){
+  const nm=p.first+' '+p.last,L=[];
+  L.push(['c','City',tps(nm,p.city+', GA',p)]);
+  L.push(['s','GA-wide',tps(nm,'GA',p)]);
+  const lp=p.last.split(/[\s-]/);
+  if(lp.length>1){L.push(['v','Alt: '+lp[0],tps(p.first+' '+lp[0],p.city+', GA',p)]);L.push(['v','Alt: '+lp[lp.length-1],tps(p.first+' '+lp[lp.length-1],p.city+', GA',p)]);}
+  const fp=p.first.split('-');
+  if(fp.length>1)L.push(['v','Alt: '+fp[0],tps(fp[0]+' '+p.last,p.city+', GA',p)]);
+  if(p.middle)L.push(['v','+ middle',tps(p.first+' '+p.middle+' '+p.last,p.city+', GA',p)]);
+  L.push(['g','Google','https://www.google.com/search?q='+encodeURIComponent('"'+nm+'" '+p.county+' County Georgia arrest')]);
+  return L;
+}
+function tags(c){
+  let t='';
+  if(/pending|not listed/i.test(c))t+='<span class="tag pend">pending</span>';
+  if(/DUI/i.test(c))t+='<span class="tag dui">DUI</span>';
+  if(/TRAFFICKING|AGGRAVATED|FORGERY|BURGLARY|ROBBERY|MURDER|RAPE|FELONY|TERRORISTIC|KIDNAP|ARSON|POSSESSION.*INTENT/i.test(c))t+='<span class="tag fel">serious</span>';
+  if(/Hold|WARRANT|Probation|Parole/i.test(c))t+='<span class="tag hold">hold/warrant</span>';
+  return t;
+}
+const countyOpts=sel=>NAMES.map(n=>`<option${n===sel?' selected':''}>${n}</option>`).join('');
+function render(){
+  const f=$('filter').value.toLowerCase(),show=$('show').value,tb=$('rows');tb.innerHTML='';let shown=0;
+  people.forEach((p,i)=>{
+    const txt=(p.first+' '+p.middle+' '+p.last+' '+p.charges+' '+p.county+' '+p.note).toLowerCase();
+    if(f&&!txt.includes(f))return;
+    if(show==='todo'&&p.done||show==='done'&&!p.done||show==='found'&&p.status!=='found'||show==='notfound'&&p.status!=='notfound')return;
+    shown++;const [a,b]=ageRange(p);
+    const tr=document.createElement('tr');if(p.done)tr.className='done';
+    tr.innerHTML=`<td><input type="checkbox" data-k="done" data-i="${i}" ${p.done?'checked':''}></td>
+    <td><b>${esc(p.first)} ${esc(p.middle)} ${esc(p.last)}${p.suffix?' '+p.suffix:''}</b></td>
+    <td>${p.age}<br><small>search ${a}–${b}</small></td><td>${esc(p.booked)}</td>
+    <td>${tags(p.charges)}<br>${esc(p.charges)}</td>
+    <td><select data-k="county" data-i="${i}">${countyOpts(p.county)}</select><br><input data-k="city" data-i="${i}" value="${esc(p.city)}" style="width:120px;font-size:12px;padding:3px;margin-top:3px"></td>
+    <td>${links(p).map(([c,l,u])=>`<a class="go ${c}" target="tpsTab" data-i="${i}" href="${u}">${esc(l)} ↗</a>`).join('')}</td>
+    <td>${contacts(p,i)}</td>
+    <td><select data-k="status" data-i="${i}"><option value="">—</option><option value="found"${p.status==='found'?' selected':''}>Found</option><option value="maybe"${p.status==='maybe'?' selected':''}>Possible match</option><option value="notfound"${p.status==='notfound'?' selected':''}>Not found</option></select><br><input class="note" data-k="note" data-i="${i}" value="${esc(p.note)}" placeholder="phone, address..."></td>`;
+    tb.appendChild(tr);
+  });
+  const d=people.filter(p=>p.done).length,fo=people.filter(p=>p.status==='found').length;
+  $('count').textContent=`${shown} shown · ${d}/${people.length} searched · ${fo} found`;
+}
+function run(append){
+  const {out,skipped}=parse($('input').value,$('county').value);
+  if(!out.length){alert('No names recognized.\nUse format: LAST, FIRST (age) — date — charges');return;}
+  const key=p=>(p.first+p.last+p.age+p.booked).toLowerCase();
+  const existing=new Set(append?people.map(key):[]);
+  const fresh=out.filter(p=>{const k=key(p);if(existing.has(k))return false;existing.add(k);return true;});
+  const dupes=out.length-fresh.length;
+  people=append?people.concat(fresh):fresh;save();render();
+  let w=`Loaded ${fresh.length} people.`;
+  if(dupes)w+=` ${dupes} duplicate(s) skipped.`;
+  if(skipped.length)w+=` ${skipped.length} line(s) not recognized (possibly cut off): ${skipped.map(esc).join(' | ')}`;
+  $('warn').innerHTML=w;
+  if($('autoopen').checked&&fresh.length)openPerson(people.indexOf(fresh[0]));
+}
+function openPerson(i){
+  const p=people[i];lastIdx=i;try{localStorage.setItem('ga_last_idx',i)}catch(e){}const w=window.open(links(p)[0][2],'tpsTab');
+  if(!w)alert('Your browser blocked the new tab. Allow pop-ups for this page, or click the green "City" button.');
+  p.done=true;save();render();
+}
+$('county').innerHTML=countyOpts('Richmond');
+$('parse').addEventListener('click',()=>run(false));
+$('add').addEventListener('click',()=>run(true));
+$('clear').addEventListener('click',()=>{if(confirm('Clear the whole list and saved progress?')){$('input').value='';people=[];save();render();$('warn').textContent='';}});
+$('next').addEventListener('click',()=>{const i=people.findIndex(p=>!p.done);if(i<0)return alert('Everyone has been searched.');openPerson(i);});
+$('filter').addEventListener('input',render);$('show').addEventListener('change',render);$('pm').addEventListener('change',render);
+$('rows').addEventListener('change',e=>{
+  const t=e.target,k=t.dataset.k,i=t.dataset.i;if(!k)return;const p=people[i];
+  if(k==='done')p.done=t.checked;
+  else if(k==='county'){p.county=t.value;p.city=COUNTIES[t.value];}
+  else p[k]=t.value;
+  save();if(k!=='note')render();
+});
+$('rows').addEventListener('click',e=>{if(e.target.dataset.kin!==undefined){nextKin(+e.target.dataset.kin);return;}
+  if(e.target.dataset.paste!==undefined){pasteInto(+e.target.dataset.paste);return;}
+  if(e.target.tagName==='A'&&e.target.dataset.i!==undefined){lastIdx=+e.target.dataset.i;const p=people[e.target.dataset.i];p.done=true;save();setTimeout(render,50);}});
+$('csv').addEventListener('click',()=>{
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const rows=[['Last','First','Middle','Suffix','Age','Booked','County','City','Charges','Searched','Result','Notes','Wireless','Other phones','Relatives','TruePeopleSearch link']];
+  people.forEach(p=>rows.push([p.last,p.first,p.middle,p.suffix,p.age,p.booked,p.county,p.city,p.charges,p.done?'yes':'no',p.status,p.note,(p.phones||[]).filter(x=>x.type==='Wireless').map(x=>fmt(x.n)).join('; '),(p.phones||[]).filter(x=>x.type!=='Wireless').map(x=>fmt(x.n)+(x.type?' ('+x.type+')':'')).join('; '),(p.relatives||[]).map(r=>r.name).join('; '),links(p)[0][2]]));
+  const blob=new Blob([rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ga_bookings_lookup.csv';a.click();
+});
+let lastIdx=null;
+const fmt=n=>'('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6);
+const qualifies=ph=>{ph=ph||[];if(!ph.length)return false;return ph.slice(0,2).every(x=>x.type==='Wireless');};
+function attach(i,d){
+  if(!d||d.src!=='tpslookup'||people[i]==null)return false;
+  if(d.bundle){
+    const p=people[i],m=d.main;
+    p.phones=m.phones||[];p.addresses=m.addresses||[];p.profile=m.url;p.profileName=m.name;p.done=true;
+    const mk=(arr,rel)=>(arr||[]).map(r=>{const k=d.kin.find(x=>x.url===r.url&&x.rel===rel);const o={name:r.name,url:r.url};if(k&&k.data){o.grabbed=true;o.phones=k.data.phones||[];o.addresses=k.data.addresses||[];o.skip=!qualifies(o.phones);}return o;});
+    p.relatives=mk(m.relatives,'Relative');p.associates=mk(m.associates,'Associate');
+    const kin=p.relatives.concat(p.associates),kept=kin.filter(r=>r.grabbed&&!r.skip).length,sk=kin.filter(r=>r.skip).length,left=kin.filter(r=>!r.grabbed).length;
+    if(!p.status&&(p.phones.length||kept))p.status='found';
+    save();render();
+    $('warn').textContent=`✅ ${p.first} ${p.last}: ${p.phones.length} phone(s), ${kept} relative/associate(s) kept, ${sk} skipped (first 2 not wireless)`+(left?`, ${left} not grabbed yet`:'')+'.';
+    if($('autoQ')&&$('autoQ').checked&&!left)buildQueue();
+    return true;
+  }
+  const p=people[i];
+  const order={Wireless:0,'':1,VoIP:2,Landline:3};
+  const kin=(p.relatives||[]).concat(p.associates||[]);
+  if(p.profile&&d.url!==p.profile&&kin.length){
+    const r=kin.find(r=>r.url===d.url)||kin.find(r=>d.name.toLowerCase().includes(r.name.toLowerCase().split(' ')[0])&&d.name.toLowerCase().includes(r.name.toLowerCase().split(' ').pop()));
+    if(r){r.phones=d.phones||[];r.addresses=d.addresses||[];r.grabbed=true;r.skip=!qualifies(r.phones);save();render();$('warn').textContent=r.skip?`${r.name}: first two numbers aren't both wireless, so they're SKIPPED.`:`Added ${r.phones.length} phone(s) for ${r.name} ✅.`;nextKin(i);return true;}
+  }
+  p.phones=(d.phones||[]).sort((a,b)=>(b.primary-a.primary)||(order[a.type]-order[b.type]));
+  p.addresses=d.addresses||[];p.relatives=d.relatives||[];p.associates=d.associates||[];p.profile=d.url;p.profileName=d.name;
+  p.done=true;if(!p.status&&p.phones.length)p.status='maybe';
+  save();render();
+  $('warn').textContent=`Added ${p.phones.length} phone(s), ${p.relatives.length} relative(s), ${p.associates.length} associate(s) to ${p.first} ${p.last}. Tap "Next relative/associate" to keep going.`;
+  return true;
+}
+function nextKin(i){
+  const p=people[i];const kin=(p.relatives||[]).concat(p.associates||[]);
+  const r=kin.find(r=>!r.grabbed);
+  if(!r){$('warn').textContent+=' All relatives & associates done for '+p.first+' '+p.last+'.';return false;}
+  lastIdx=i;window.open(r.url,'tpsTab');
+  $('warn').textContent+=' Opening '+r.name+' ('+(kin.indexOf(r)+1)+' of '+kin.length+')… grab their page next.';return true;
+}
+let lastClip='';
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)window.dispatchEvent(new Event('focus'));});
+window.addEventListener('focus',async()=>{if(lastIdx==null){const s=localStorage.getItem('ga_last_idx');if(s==null)return;lastIdx=+s;}try{const t=await navigator.clipboard.readText();if(t&&t!==lastClip&&t.indexOf('"tpslookup"')>0){lastClip=t;attach(lastIdx,JSON.parse(t));}}catch(e){}});
+window.addEventListener('message',e=>{if(e.data&&e.data.src==='tpslookup'){if(lastIdx==null)return alert('Open a search from this tool first, then click Grab.');attach(lastIdx,e.data);}});
+async function pasteInto(i){
+  let t='';try{t=await navigator.clipboard.readText();}catch(e){}
+  if(!t||t.indexOf('tpslookup')<0)t=prompt('Paste the copied data:')||'';
+  try{if(!attach(i,JSON.parse(t)))alert('That data was not recognized.');}catch(e){alert('That data was not recognized.');}
+}
+function contacts(p,i){
+  let h='';
+  if(p.profileName)h+=`<small>From: <a href="${esc(p.profile)}" target="_blank">${esc(p.profileName)}</a></small><br>`;
+  (p.addresses||[]).forEach(a=>{h+=`<small>🏠 ${esc(a)}</small><br>`;});
+  (p.phones||[]).forEach(x=>{h+=`<a href="tel:+1${x.n}" style="white-space:nowrap;${x.type==='Wireless'?'font-weight:bold;color:#15803d':'color:#444'}">📞 ${fmt(x.n)}</a> <small>${x.type||'?'}${x.primary?' · primary':''}</small><br>`;});
+  [['Relatives','relatives','👪'],['Associates','associates','🤝']].forEach(([lab,key,ic])=>{const arr=p[key]||[];if(!arr.length)return;h+=`<small><b>${lab}:</b></small><br>`;arr.forEach(r=>{if(r.grabbed&&r.skip){h+=`<small style="color:#999;text-decoration:line-through">${ic} ${esc(r.name)}</small> <small style="color:#b91c1c">skipped (first 2 not wireless)</small><br>`;return;}h+=`<a href="${esc(r.url)}" target="tpsTab" data-rel="1" style="font-size:12px">${ic} ${esc(r.name)}</a>${r.grabbed?' ✅':''}<br>`;(r.addresses||[]).slice(0,1).forEach(a=>{h+=`&nbsp;&nbsp;<small>🏠 ${esc(a)}</small><br>`;});(r.phones||[]).forEach(x=>{h+=`&nbsp;&nbsp;<a href="tel:+1${x.n}" style="font-size:12px;${x.type==='Wireless'?'font-weight:bold;color:#15803d':'color:#444'}">📞 ${fmt(x.n)}</a> <small>${x.type||'?'}</small><br>`;});});});
+  const left=((p.relatives||[]).concat(p.associates||[])).filter(r=>!r.grabbed).length;
+  if(left)h+=`<button data-kin="${i}" style="font-size:11px;padding:3px 7px;background:#16a34a">Next relative/associate ▶ (${left} left)</button><br>`;
+  h+=`<button data-paste="${i}" style="font-size:11px;padding:3px 7px;background:#9ca3af">Paste</button>`;
+  return h;
+}
+
+const CK='ga_booking_calls_v1';let calls=JSON.parse(localStorage.getItem(CK)||'{}');let queue=[],qi=0;
+const saveCalls=()=>localStorage.setItem(CK,JSON.stringify(calls));
+function allContacts(){
+  const out=[],seen={};
+  people.forEach(p=>{
+    const off=p.first+' '+p.last,base={offender:off,age:p.age,county:p.county,booked:p.booked,charges:p.charges};
+    const add=(name,rel,phones,url,addr)=>(phones||[]).forEach(x=>{const k=x.n+'|'+name.toLowerCase();if(seen[k])return;seen[k]=1;out.push(Object.assign({name,relation:rel,phone:x.n,type:x.type||'Unknown',url:url||'',address:(addr||[])[0]||''},base));});
+    add(off,'Offender',p.phones,p.profile,p.addresses);
+    (p.relatives||[]).forEach(r=>{if(!r.skip)add(r.name,'Relative',r.phones,r.url,r.addresses);});
+    (p.associates||[]).forEach(r=>{if(!r.skip)add(r.name,'Associate',r.phones,r.url,r.addresses);});
+  });
+  return out;
+}
+function buildQueue(){
+  const want={Offender:$('qOff').checked,Relative:$('qRel').checked,Associate:$('qAsc').checked};
+  const seenN={};
+  queue=allContacts().filter(c=>want[c.relation]&&($('qAll').checked||c.type==='Wireless')&&!($('qSkip').checked&&calls[c.phone])).filter(c=>seenN[c.phone]?false:(seenN[c.phone]=1));
+  qi=0;
+  if(!queue.length){$('qPanel').style.display='none';$('qInfo').textContent='No numbers to call. Grab phones for offenders, relatives or associates first, or check the filters.';return;}
+  $('qInfo').textContent=queue.length+' number(s) in queue.';$('qPanel').style.display='block';showQ();
+}
+function showQ(){
+  if(qi>=queue.length){$('qPanel').style.display='none';$('qInfo').textContent='✅ Queue finished. '+Object.keys(calls).length+' call outcome(s) logged.';return;}
+  const c=queue[qi];
+  $('qPos').textContent=`Call ${qi+1} of ${queue.length}`+(calls[c.phone]?` · last outcome: ${calls[c.phone].outcome}`:'');
+  $('qName').textContent=c.name+'  ('+c.relation+(c.type!=='Wireless'?', '+c.type:'')+')';
+  $('qWho').textContent=(c.address?'🏠 '+c.address+' · ':'')+(c.relation==='Offender'?`Booked ${c.booked} · ${c.county} County · ${c.charges}`:`Re: ${c.offender} (${c.age}), booked ${c.booked}, ${c.county} County · ${c.charges}`);
+  $('qCall').textContent='📞 '+fmt(c.phone);$('qCall').href='tel:+1'+c.phone;$('qNote').value=(calls[c.phone]||{}).note||'';
+}
+document.querySelectorAll('#qPanel [data-o]').forEach(b=>b.addEventListener('click',()=>{
+  const c=queue[qi];calls[c.phone]={outcome:b.dataset.o,note:$('qNote').value,time:new Date().toLocaleString(),name:c.name};saveCalls();
+  qi++;showQ();if($('qAuto').checked&&qi<queue.length)location.href=$('qCall').href;
+}));
+$('qNext').addEventListener('click',()=>{qi++;showQ();});
+$('qPrev').addEventListener('click',()=>{if(qi>0)qi--;$('qPanel').style.display='block';showQ();});
+$('qBuild').addEventListener('click',buildQueue);
+$('qReset').addEventListener('click',()=>{if(confirm('Erase all logged call outcomes?')){calls={};saveCalls();$('qInfo').textContent='Call outcomes cleared.';}});
+$('qCsv').addEventListener('click',()=>{
+  const list=allContacts();if(!list.length)return alert('No phone numbers grabbed yet.');
+  list.sort((a,b)=>(a.type==='Wireless'?0:1)-(b.type==='Wireless'?0:1));
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const rows=[['Contact name','Relation','Phone','Phone type','Address','Offender','Offender age','County','Booked','Charges','Call outcome','Call note','Called at','Profile link']];
+  list.forEach(c=>{const k=calls[c.phone]||{};rows.push([c.name,c.relation,fmt(c.phone),c.type,c.address,c.offender,c.age,c.county,c.booked,c.charges,k.outcome,k.note,k.time,c.url]);});
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));
+  a.download='call_list_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  $('qInfo').textContent='CSV downloaded: '+list.length+' contact number(s).';
+});
+render();
+</script></body></html>
